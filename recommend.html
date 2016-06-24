@@ -87,7 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="train_system.html">How to train the system?</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to recommend an unseen paper?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-recom.recommend">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-recommend">API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">Detailed API</a></li>
@@ -146,11 +146,11 @@ and determines for each of them whether it should be recommended or not.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="module-recom.recommend">
-<span id="api"></span><h2>API<a class="headerlink" href="#module-recom.recommend" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-recommend">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-recommend" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="recom.recommend.compute_features_batch">
-<code class="descclassname">recom.recommend.</code><code class="descname">compute_features_batch</code><span class="sig-paren">(</span><em>papers</em>, <em>ngrams=None</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/recommend.html#compute_features_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.recommend.compute_features_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="recommend.compute_features_batch">
+<code class="descclassname">recommend.</code><code class="descname">compute_features_batch</code><span class="sig-paren">(</span><em>papers</em>, <em>ngrams=None</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommend.html#compute_features_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recommend.compute_features_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the features of the given list of papers, w.r.t. the ngrams.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -174,8 +174,8 @@ and determines for each of them whether it should be recommended or not.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.recommend.main">
-<code class="descclassname">recom.recommend.</code><code class="descname">main</code><span class="sig-paren">(</span><em>dataset</em>, <em>author_papers_file</em>, <em>author_name</em>, <em>author_slug</em>, <em>author_dssm</em>, <em>unseen_papers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/recommend.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.recommend.main" title="Permalink to this definition">¶</a></dt>
+<dt id="recommend.main">
+<code class="descclassname">recommend.</code><code class="descname">main</code><span class="sig-paren">(</span><em>dataset</em>, <em>author_papers_file</em>, <em>author_name</em>, <em>author_slug</em>, <em>author_dssm</em>, <em>unseen_papers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommend.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recommend.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a stream of unseen papers, decides if each paper should be recommended or not.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

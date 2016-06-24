@@ -50,5 +50,5 @@ The produced dataset is stored into a file and can be reused later, for exemple 
 API
 -----
 
-.. automodule:: recom.generate_dataset
+.. automodule:: generate_dataset
    :members:

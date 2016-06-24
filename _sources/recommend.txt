@@ -19,5 +19,5 @@ In a console, you can use the following command:
 API
 ------
 
-.. automodule:: recom.recommend
+.. automodule:: recommend
    :members:

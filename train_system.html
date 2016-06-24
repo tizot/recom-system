@@ -87,7 +87,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to train the system?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#how-does-it-work">How does it work?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-recom.train_dssm">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-train_dssm">API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="recommend.html">How to recommend an unseen paper?</a></li>
@@ -145,18 +145,18 @@
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>In a console, you can use the following command:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">train_dssm</span> <span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">e</span> <span class="mi">100</span> <span class="o">-</span><span class="n">n1</span> <span class="mi">300</span> <span class="o">-</span><span class="n">n2</span> <span class="mi">300</span> <span class="o">-</span><span class="n">no</span> <span class="mi">128</span> <span class="o">-</span><span class="n">r</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">i</span> <span class="s2">&quot;../data/dataset-pasi.npz&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;../data/output-pasi&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">train_dssm</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">e</span> <span class="mi">100</span> <span class="o">-</span><span class="n">n1</span> <span class="mi">300</span> <span class="o">-</span><span class="n">n2</span> <span class="mi">300</span> <span class="o">-</span><span class="n">no</span> <span class="mi">128</span> <span class="o">-</span><span class="n">r</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">i</span> <span class="s2">&quot;../data/dataset-pasi.npz&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;../data/output-pasi&quot;</span>
 </pre></div>
 </div>
 <p>This will build a DSSM with 300 units in the first and in the second layers, and 128 units in the output layer.
 The training will be done over 100 epochs, with a learning rate of 0.1.
 The input dataset has been produced by the script <code class="docutils literal"><span class="pre">generate_dataset.py</span></code>.</p>
 </div>
-<div class="section" id="module-recom.train_dssm">
-<span id="api"></span><h2>API<a class="headerlink" href="#module-recom.train_dssm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-train_dssm">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-train_dssm" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="recom.train_dssm.main">
-<code class="descclassname">recom.train_dssm.</code><code class="descname">main</code><span class="sig-paren">(</span><em>author_id=None</em>, <em>num_epochs=100</em>, <em>num_entries=6</em>, <em>num_hid1=300</em>, <em>num_hid2=300</em>, <em>num_out=128</em>, <em>learning_rate=0.1</em>, <em>input_file=None</em>, <em>output_file='output'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/train_dssm.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.train_dssm.main" title="Permalink to this definition">¶</a></dt>
+<dt id="train_dssm.main">
+<code class="descclassname">train_dssm.</code><code class="descname">main</code><span class="sig-paren">(</span><em>author_id=None</em>, <em>num_epochs=100</em>, <em>num_entries=6</em>, <em>num_hid1=300</em>, <em>num_hid2=300</em>, <em>num_out=128</em>, <em>learning_rate=0.1</em>, <em>input_file=None</em>, <em>output_file='output'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/train_dssm.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_dssm.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a DSSM and trains it with the dataset of the given author.</p>
 <p>The DSSM parameters are saved into a file, in order to be used for recommendation.
 You must specify either the author&#8217;s id, or the dataset input file.</p>

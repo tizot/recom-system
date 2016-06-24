@@ -142,9 +142,9 @@
   <div class="section" id="deep-semantic-structured-model-dssm">
 <h1>Deep Semantic Structured Model (DSSM)<a class="headerlink" href="#deep-semantic-structured-model-dssm" title="Permalink to this headline">¶</a></h1>
 <p>The module <code class="docutils literal"><span class="pre">dssm</span></code> provides functions to build a DSSM.</p>
-<span class="target" id="module-recom.dssm"></span><dl class="function">
-<dt id="recom.dssm.build_multi_dssm">
-<code class="descclassname">recom.dssm.</code><code class="descname">build_multi_dssm</code><span class="sig-paren">(</span><em>input_var=None</em>, <em>num_samples=None</em>, <em>num_entries=6</em>, <em>num_ngrams=74088</em>, <em>num_hid1=300</em>, <em>num_hid2=300</em>, <em>num_out=128</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dssm.html#build_multi_dssm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dssm.build_multi_dssm" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-dssm"></span><dl class="function">
+<dt id="dssm.build_multi_dssm">
+<code class="descclassname">dssm.</code><code class="descname">build_multi_dssm</code><span class="sig-paren">(</span><em>input_var=None</em>, <em>num_samples=None</em>, <em>num_entries=6</em>, <em>num_ngrams=74088</em>, <em>num_hid1=300</em>, <em>num_hid2=300</em>, <em>num_out=128</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dssm.html#build_multi_dssm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dssm.build_multi_dssm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a DSSM structure in a Lasagne/Theano way.</p>
 <p>The built DSSM is the neural network that computes the projection of only one paper.
 The input <code class="docutils literal"><span class="pre">input_var</span></code> should have two dimensions: (<code class="docutils literal"><span class="pre">num_samples</span> <span class="pre">*</span> <span class="pre">num_entries</span></code>, <code class="docutils literal"><span class="pre">num_ngrams</span></code>).
@@ -176,8 +176,8 @@ The output is then computed in a batch way: one paper at a time, but all papers 
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dssm.compute_loss">
-<code class="descclassname">recom.dssm.</code><code class="descname">compute_loss</code><span class="sig-paren">(</span><em>output</em>, <em>num_samples</em>, <em>num_entries=6</em>, <em>gamma=500.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dssm.html#compute_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dssm.compute_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="dssm.compute_loss">
+<code class="descclassname">dssm.</code><code class="descname">compute_loss</code><span class="sig-paren">(</span><em>output</em>, <em>num_samples</em>, <em>num_entries=6</em>, <em>gamma=500.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dssm.html#compute_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dssm.compute_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the loss of a dataset, given the output of the DSSM.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -202,8 +202,8 @@ The output is then computed in a batch way: one paper at a time, but all papers 
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dssm.iterate_minibatches">
-<code class="descclassname">recom.dssm.</code><code class="descname">iterate_minibatches</code><span class="sig-paren">(</span><em>inputs</em>, <em>batchsize</em>, <em>shuffle=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dssm.html#iterate_minibatches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dssm.iterate_minibatches" title="Permalink to this definition">¶</a></dt>
+<dt id="dssm.iterate_minibatches">
+<code class="descclassname">dssm.</code><code class="descname">iterate_minibatches</code><span class="sig-paren">(</span><em>inputs</em>, <em>batchsize</em>, <em>shuffle=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dssm.html#iterate_minibatches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dssm.iterate_minibatches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces an batch iterator over the input.</p>
 <dl class="docutils">
 <dt>Usage:</dt>

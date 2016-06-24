@@ -143,13 +143,13 @@
   <div class="section" id="string-tools">
 <h1>String Tools<a class="headerlink" href="#string-tools" title="Permalink to this headline">¶</a></h1>
 <p>The module <code class="docutils literal"><span class="pre">string_tools</span></code> gathers utils for string manipulation, essentially cleaning.</p>
-<span class="target" id="module-recom.string_tools"></span><dl class="class">
-<dt id="recom.string_tools.StringCleaner">
-<em class="property">class </em><code class="descclassname">recom.string_tools.</code><code class="descname">StringCleaner</code><a class="reference internal" href="_modules/recom/string_tools.html#StringCleaner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringCleaner" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-string_tools"></span><dl class="class">
+<dt id="string_tools.StringCleaner">
+<em class="property">class </em><code class="descclassname">string_tools.</code><code class="descname">StringCleaner</code><a class="reference internal" href="_modules/string_tools.html#StringCleaner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringCleaner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides tools to clean strings, like accents removal and standardisation.</p>
 <dl class="method">
-<dt id="recom.string_tools.StringCleaner.clean_string">
-<code class="descname">clean_string</code><span class="sig-paren">(</span><em>s</em>, <em>bord=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringCleaner.clean_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringCleaner.clean_string" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.StringCleaner.clean_string">
+<code class="descname">clean_string</code><span class="sig-paren">(</span><em>s</em>, <em>bord=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#StringCleaner.clean_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringCleaner.clean_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply cleaning operations to a string, especially accents removal.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -172,8 +172,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="recom.string_tools.StringCleaner.remove_accents">
-<code class="descname">remove_accents</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringCleaner.remove_accents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringCleaner.remove_accents" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.StringCleaner.remove_accents">
+<code class="descname">remove_accents</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#StringCleaner.remove_accents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringCleaner.remove_accents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces all accentuated characters by their non-accentuated equivalent.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -192,8 +192,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="recom.string_tools.StringHasher">
-<em class="property">class </em><code class="descclassname">recom.string_tools.</code><code class="descname">StringHasher</code><span class="sig-paren">(</span><em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.StringHasher">
+<em class="property">class </em><code class="descclassname">string_tools.</code><code class="descname">StringHasher</code><span class="sig-paren">(</span><em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#StringHasher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringHasher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides tools to transform a sentence into a bag-of-words vector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -204,8 +204,8 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="recom.string_tools.StringHasher.hash">
-<code class="descname">hash</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.hash" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.StringHasher.hash">
+<code class="descname">hash</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#StringHasher.hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringHasher.hash" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms a string into a n-gram count representation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -222,8 +222,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="recom.string_tools.StringHasher.init_ngrams">
-<code class="descname">init_ngrams</code><span class="sig-paren">(</span><em>tokens</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.init_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.init_ngrams" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.StringHasher.init_ngrams">
+<code class="descname">init_ngrams</code><span class="sig-paren">(</span><em>tokens</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#StringHasher.init_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringHasher.init_ngrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the ngrams from a list of words and affects them to <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
@@ -240,8 +240,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="recom.string_tools.StringHasher.load_ngrams">
-<code class="descname">load_ngrams</code><span class="sig-paren">(</span><em>ngrams_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.load_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.load_ngrams" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.StringHasher.load_ngrams">
+<code class="descname">load_ngrams</code><span class="sig-paren">(</span><em>ngrams_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#StringHasher.load_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringHasher.load_ngrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a list of ngrams into <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -254,16 +254,16 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="recom.string_tools.StringHasher.print_ngrams">
-<code class="descname">print_ngrams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.print_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.print_ngrams" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.StringHasher.print_ngrams">
+<code class="descname">print_ngrams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#StringHasher.print_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.StringHasher.print_ngrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints the list of ngrams.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="recom.string_tools.WordHasher">
-<em class="property">class </em><code class="descclassname">recom.string_tools.</code><code class="descname">WordHasher</code><span class="sig-paren">(</span><em>n=3</em>, <em>bord='#'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.WordHasher">
+<em class="property">class </em><code class="descclassname">string_tools.</code><code class="descname">WordHasher</code><span class="sig-paren">(</span><em>n=3</em>, <em>bord='#'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#WordHasher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.WordHasher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides tools to transform a string into a bag-of-ngrams vector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -278,8 +278,8 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="recom.string_tools.WordHasher.hash">
-<code class="descname">hash</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.hash" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.WordHasher.hash">
+<code class="descname">hash</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#WordHasher.hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.WordHasher.hash" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms a string into a n-gram count representation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -296,8 +296,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="recom.string_tools.WordHasher.init_ngrams">
-<code class="descname">init_ngrams</code><span class="sig-paren">(</span><em>tokens</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.init_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.init_ngrams" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.WordHasher.init_ngrams">
+<code class="descname">init_ngrams</code><span class="sig-paren">(</span><em>tokens</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#WordHasher.init_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.WordHasher.init_ngrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the ngrams from a list of words and affects them to <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -310,8 +310,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="recom.string_tools.WordHasher.load_ngrams">
-<code class="descname">load_ngrams</code><span class="sig-paren">(</span><em>ngrams_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.load_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.load_ngrams" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.WordHasher.load_ngrams">
+<code class="descname">load_ngrams</code><span class="sig-paren">(</span><em>ngrams_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#WordHasher.load_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.WordHasher.load_ngrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a list of ngrams into <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -324,8 +324,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="recom.string_tools.WordHasher.print_ngrams">
-<code class="descname">print_ngrams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.print_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.print_ngrams" title="Permalink to this definition">¶</a></dt>
+<dt id="string_tools.WordHasher.print_ngrams">
+<code class="descname">print_ngrams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/string_tools.html#WordHasher.print_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#string_tools.WordHasher.print_ngrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints the list of ngrams.</p>
 </dd></dl>
 

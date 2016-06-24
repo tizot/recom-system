@@ -143,9 +143,9 @@
   <div class="section" id="dataset-tools">
 <h1>Dataset Tools<a class="headerlink" href="#dataset-tools" title="Permalink to this headline">¶</a></h1>
 <p>The module <code class="docutils literal"><span class="pre">dataset_tools</span></code> provides functions to construct a dataset from raw data.</p>
-<span class="target" id="module-recom.dataset_tools"></span><dl class="function">
-<dt id="recom.dataset_tools.build_dataset">
-<code class="descclassname">recom.dataset_tools.</code><code class="descname">build_dataset</code><span class="sig-paren">(</span><em>papers</em>, <em>citations</em>, <em>bad_papers</em>, <em>num_entries=6</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#build_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.build_dataset" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-dataset_tools"></span><dl class="function">
+<dt id="dataset_tools.build_dataset">
+<code class="descclassname">dataset_tools.</code><code class="descname">build_dataset</code><span class="sig-paren">(</span><em>papers</em>, <em>citations</em>, <em>bad_papers</em>, <em>num_entries=6</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset_tools.html#build_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset_tools.build_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a dataset from features variables.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -171,8 +171,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dataset_tools.compute_features">
-<code class="descclassname">recom.dataset_tools.</code><code class="descname">compute_features</code><span class="sig-paren">(</span><em>papers</em>, <em>stringHasher</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.compute_features" title="Permalink to this definition">¶</a></dt>
+<dt id="dataset_tools.compute_features">
+<code class="descclassname">dataset_tools.</code><code class="descname">compute_features</code><span class="sig-paren">(</span><em>papers</em>, <em>stringHasher</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset_tools.html#compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset_tools.compute_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the features of a list of papers, with a given list of ngrams.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -180,7 +180,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>papers</strong> (<em>list of tuples</em>) &#8211; the list of papers (each element is a tuple of 3 strings: id, title, abstract)</li>
-<li><strong>stringHasher</strong> (<a class="reference internal" href="string_tools.html#recom.string_tools.StringHasher" title="recom.string_tools.StringHasher"><code class="xref py py-class docutils literal"><span class="pre">recom.string_tools.StringHasher</span></code></a>) &#8211; the object which contains the list of ngrams</li>
+<li><strong>stringHasher</strong> (<a class="reference internal" href="string_tools.html#string_tools.StringHasher" title="string_tools.StringHasher"><code class="xref py py-class docutils literal"><span class="pre">string_tools.StringHasher</span></code></a>) &#8211; the object which contains the list of ngrams</li>
 <li><strong>verbosity</strong> (<em>int</em>) &#8211; 0: quiet; 1: normal; 2: high</li>
 </ul>
 </td>
@@ -196,8 +196,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dataset_tools.dataset_from_file">
-<code class="descclassname">recom.dataset_tools.</code><code class="descname">dataset_from_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#dataset_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.dataset_from_file" title="Permalink to this definition">¶</a></dt>
+<dt id="dataset_tools.dataset_from_file">
+<code class="descclassname">dataset_tools.</code><code class="descname">dataset_from_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset_tools.html#dataset_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset_tools.dataset_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a dataset from file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -214,15 +214,15 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dataset_tools.dataset_to_file">
-<code class="descclassname">recom.dataset_tools.</code><code class="descname">dataset_to_file</code><span class="sig-paren">(</span><em>dataset</em>, <em>ngrams</em>, <em>filename='dataset'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#dataset_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.dataset_to_file" title="Permalink to this definition">¶</a></dt>
+<dt id="dataset_tools.dataset_to_file">
+<code class="descclassname">dataset_tools.</code><code class="descname">dataset_to_file</code><span class="sig-paren">(</span><em>dataset</em>, <em>ngrams</em>, <em>filename='dataset'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset_tools.html#dataset_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset_tools.dataset_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a dataset to a file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset</strong> (<code class="xref py py-class docutils literal"><span class="pre">np.ndarray</span></code>) &#8211; the dataset to save (built with <a class="reference internal" href="#recom.dataset_tools.build_dataset" title="recom.dataset_tools.build_dataset"><code class="xref py py-func docutils literal"><span class="pre">recom.dataset_tools.build_dataset()</span></code></a>)</li>
+<li><strong>dataset</strong> (<code class="xref py py-class docutils literal"><span class="pre">np.ndarray</span></code>) &#8211; the dataset to save (built with <a class="reference internal" href="#dataset_tools.build_dataset" title="dataset_tools.build_dataset"><code class="xref py py-func docutils literal"><span class="pre">dataset_tools.build_dataset()</span></code></a>)</li>
 <li><strong>ngrams</strong> (<em>list of strings</em>) &#8211; the ngrams used to compute the features</li>
 <li><strong>filename</strong> (<em>string</em>) &#8211; the filename without extension (will be .npz)</li>
 </ul>
@@ -233,8 +233,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dataset_tools.generate_vocab">
-<code class="descclassname">recom.dataset_tools.</code><code class="descname">generate_vocab</code><span class="sig-paren">(</span><em>papers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#generate_vocab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.generate_vocab" title="Permalink to this definition">¶</a></dt>
+<dt id="dataset_tools.generate_vocab">
+<code class="descclassname">dataset_tools.</code><code class="descname">generate_vocab</code><span class="sig-paren">(</span><em>papers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset_tools.html#generate_vocab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset_tools.generate_vocab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the vocabulary used in the papers given in parameters, after cleaning and stopwords removal.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -251,8 +251,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dataset_tools.invert_citations">
-<code class="descclassname">recom.dataset_tools.</code><code class="descname">invert_citations</code><span class="sig-paren">(</span><em>citations</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#invert_citations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.invert_citations" title="Permalink to this definition">¶</a></dt>
+<dt id="dataset_tools.invert_citations">
+<code class="descclassname">dataset_tools.</code><code class="descname">invert_citations</code><span class="sig-paren">(</span><em>citations</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset_tools.html#invert_citations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset_tools.invert_citations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms a list of citation relations into a hashtable cited_paper -&gt; list of citing papers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -275,8 +275,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="recom.dataset_tools.prepare_dataset">
-<code class="descclassname">recom.dataset_tools.</code><code class="descname">prepare_dataset</code><span class="sig-paren">(</span><em>user_papers</em>, <em>citations</em>, <em>cited_papers</em>, <em>tokens</em>, <em>bad_papers=None</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#prepare_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.prepare_dataset" title="Permalink to this definition">¶</a></dt>
+<dt id="dataset_tools.prepare_dataset">
+<code class="descclassname">dataset_tools.</code><code class="descname">prepare_dataset</code><span class="sig-paren">(</span><em>user_papers</em>, <em>citations</em>, <em>cited_papers</em>, <em>tokens</em>, <em>bad_papers=None</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset_tools.html#prepare_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset_tools.prepare_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prepares data from string representations of papers in order to buidl a numeric dataset.</p>
 <p>The result is a tuple of 4 elements:</p>
 <p>(1) the user&#8217;s papers, as a dictionary: each key is a the id of a paper written by the user,

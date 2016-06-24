@@ -250,7 +250,7 @@
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;citations&#39;</span><span class="p">]:</span>
             <span class="n">citations</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">c</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;citing&#39;</span><span class="p">,</span> <span class="s1">&#39;cited&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="get_cited_papers"><a class="viewcode-back" href="../../data_retrieval.html#recom.data_retrieval.get_cited_papers">[docs]</a><span class="k">def</span> <span class="nf">get_cited_papers</span><span class="p">(</span><span class="n">cited</span><span class="p">,</span> <span class="n">db_cursor</span><span class="p">,</span> <span class="n">papers_table</span><span class="o">=</span><span class="s1">&#39;papers&#39;</span><span class="p">):</span>
