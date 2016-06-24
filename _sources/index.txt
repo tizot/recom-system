@@ -20,7 +20,9 @@ We provide three scripts to do that:
 
    It may also be good to adapt the API and the scripts to use only CSV or JSON files, which are naturally structured and do not require parsing.
 
-
+-------------
+Contents
+-------------
 
 .. toctree::
    :maxdepth: 2
@@ -34,10 +36,9 @@ We provide three scripts to do that:
    dssm
 
 
-
-
+-------------------
 Indices and tables
-==================
+-------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

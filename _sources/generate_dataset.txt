@@ -40,8 +40,7 @@ Usage
 --------
 In a console, you can use the following command:
 
->>> python generate_dataset.py -n "Gabriella Pasi" -s "pasi" -af "./data/pasi-papers.txt" -bf "./data/bad-papers.txt"
-...                             -c 4 -d "dblp" -o "./data/dataset-pasi"
+>>> python generate_dataset.py -n "Gabriella Pasi" -s "pasi" -af "./data/pasi-papers.txt" -bf "./data/bad-papers.txt" -c 4 -d "dblp" -o "./data/dataset-pasi"
 
 This will parse the files and request the SQL database in order to build a numeric dataset.
 The produced dataset is stored into a file and can be reused later, for exemple in the training part.
