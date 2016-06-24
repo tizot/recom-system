@@ -25,5 +25,5 @@ The input dataset has been produced by the script ``generate_dataset.py``.
 API
 -------------------
 
-.. automodule:: recom.train_dssm
+.. automodule:: train_dssm
    :members:

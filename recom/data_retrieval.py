@@ -107,7 +107,7 @@ def generate_citations(author_papers):
     """Returns the citation relations.
 
     Args:
-        author_papers (list of dicts): the author's papers, as a list of dicts produced by the function :func:`recom.data_retrieval.list2paper`
+        author_papers (list of dicts): the author's papers, as a list of dicts produced by the function :func:`data_retrieval.list2paper`
 
     Returns:
         :class:`pandas.DataFrame`: the citation relations
@@ -174,7 +174,7 @@ def get_irrelevant_cited_papers(bad_papers, db_cursor, papers_table='papers'):
     """Retrieves the papers cited by the irrelevant papers given in input, from a SQL database.
 
     Args:
-        bad_papers (list of dicts): the list of irrelevant papers, formatted as the output of :func:`recom.data_retrieval.list2paper`
+        bad_papers (list of dicts): the list of irrelevant papers, formatted as the output of :func:`data_retrieval.list2paper`
         db_cursor (:class:`MySQLdb.cursors.Cursor`): cursor of a SQL database in which there is a papers table
         papers_table (string): name of the papers table in the SQL database
 

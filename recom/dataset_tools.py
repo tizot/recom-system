@@ -40,7 +40,7 @@ def compute_features(papers, stringHasher, verbosity=1):
 
     Args:
         papers (list of tuples): the list of papers (each element is a tuple of 3 strings: id, title, abstract)
-        stringHasher (:class:`recom.string_tools.StringHasher`): the object which contains the list of ngrams
+        stringHasher (:class:`string_tools.StringHasher`): the object which contains the list of ngrams
         verbosity (int): 0: quiet; 1: normal; 2: high
 
     Returns:
@@ -222,7 +222,7 @@ def dataset_to_file(dataset, ngrams, filename='dataset'):
     """Save a dataset to a file.
 
     Args:
-        dataset (:class:`np.ndarray`): the dataset to save (built with :func:`recom.dataset_tools.build_dataset`)
+        dataset (:class:`np.ndarray`): the dataset to save (built with :func:`dataset_tools.build_dataset`)
         ngrams (list of strings): the ngrams used to compute the features
         filename (string): the filename without extension (will be .npz)
     """
