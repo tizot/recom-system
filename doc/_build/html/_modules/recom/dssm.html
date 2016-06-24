@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>recom.dssm &mdash; Personalised Scientific Papers Recommendation System 1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Personalised Scientific Papers Recommendation System 1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Personalised Scientific Papers Recommendation System
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_dataset.html">How to generate a dataset?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../train_system.html">How to train the system?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../string_tools.html">String Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataset_tools.html">Dataset Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_retrieval.html">Data Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dssm.html">Deep Semantic Structured Model (DSSM)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Personalised Scientific Papers Recommendation System</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>recom.dssm</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for recom.dssm</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">theano</span>
+<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
+
+<span class="kn">from</span> <span class="nn">lasagne</span> <span class="kn">import</span> <span class="n">layers</span><span class="p">,</span> <span class="n">init</span><span class="p">,</span> <span class="n">nonlinearities</span>
+
+
+<div class="viewcode-block" id="build_multi_dssm"><a class="viewcode-back" href="../../dssm.html#recom.dssm.build_multi_dssm">[docs]</a><span class="k">def</span> <span class="nf">build_multi_dssm</span><span class="p">(</span><span class="n">input_var</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_entries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">num_ngrams</span><span class="o">=</span><span class="mi">42</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_hid1</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">num_hid2</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">num_out</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds a DSSM structure in a Lasagne/Theano way.</span>
+
+<span class="sd">    The built DSSM is the neural network that computes the projection of only one paper.</span>
+<span class="sd">    The input ``input_var`` should have two dimensions: (``num_samples * num_entries``, ``num_ngrams``).</span>
+<span class="sd">    The output is then computed in a batch way: one paper at a time, but all papers from the same sample in the dataset are grouped</span>
+<span class="sd">    (cited papers, citing papers and ``num_entries - 2`` irrelevant papers).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_var (:class:`theano.tensor.TensorType` or None): symbolic input variable of the DSSM</span>
+<span class="sd">        num_samples (int): the number of samples in the batch input dataset (number of rows)</span>
+<span class="sd">        num_entries (int): the number of compared papers in the DSSM structure</span>
+<span class="sd">        num_ngrams (int): the size of the vocabulary</span>
+<span class="sd">        num_hid1 (int): the number of units in the first hidden layer</span>
+<span class="sd">        num_hid2 (int): the number of units in the second hidden layer</span>
+<span class="sd">        num_out (int): the number of units in the output layer</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :class:`lasagne.layers.Layer`: the output layer of the DSSM</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="p">(</span><span class="n">num_entries</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Initialise input layer</span>
+    <span class="k">if</span> <span class="n">num_samples</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">num_rows</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">num_rows</span> <span class="o">=</span> <span class="n">num_samples</span> <span class="o">*</span> <span class="n">num_entries</span>
+
+    <span class="n">l_in</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">InputLayer</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_ngrams</span><span class="p">),</span> <span class="n">input_var</span><span class="o">=</span><span class="n">input_var</span><span class="p">)</span>
+
+    <span class="c1"># Initialise the hidden and output layers or the DSSM</span>
+    <span class="n">l_hid1</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">DenseLayer</span><span class="p">(</span><span class="n">l_in</span><span class="p">,</span> <span class="n">num_units</span><span class="o">=</span><span class="n">num_hid1</span><span class="p">,</span> <span class="n">nonlinearity</span><span class="o">=</span><span class="n">nonlinearities</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="n">init</span><span class="o">.</span><span class="n">GlorotUniform</span><span class="p">())</span>
+    <span class="n">l_hid2</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">DenseLayer</span><span class="p">(</span><span class="n">l_hid1</span><span class="p">,</span> <span class="n">num_units</span><span class="o">=</span><span class="n">num_hid2</span><span class="p">,</span> <span class="n">nonlinearity</span><span class="o">=</span><span class="n">nonlinearities</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="n">init</span><span class="o">.</span><span class="n">GlorotUniform</span><span class="p">())</span>
+    <span class="n">l_out</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">DenseLayer</span><span class="p">(</span><span class="n">l_hid2</span><span class="p">,</span> <span class="n">num_units</span><span class="o">=</span><span class="n">num_out</span><span class="p">,</span> <span class="n">nonlinearity</span><span class="o">=</span><span class="n">nonlinearities</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="n">init</span><span class="o">.</span><span class="n">GlorotUniform</span><span class="p">())</span>
+
+    <span class="n">l_out</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">ExpressionLayer</span><span class="p">(</span><span class="n">l_out</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">X</span><span class="p">:</span> <span class="n">X</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">output_shape</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">l_out</span></div>
+
+
+<div class="viewcode-block" id="compute_loss"><a class="viewcode-back" href="../../dssm.html#recom.dssm.compute_loss">[docs]</a><span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_entries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">500.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the loss of a dataset, given the output of the DSSM.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output (:class:`lasagne.layers.Layer`): the output of the DSSM</span>
+<span class="sd">        num_samples (int): the number of samples in the dataset</span>
+<span class="sd">        num_entries (int): the number of compared papers in the DSSM structure</span>
+<span class="sd">        gamma (float): the coefficient applied in the softmax of the similarities</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        theano.tensor.TensorType: the loss of the dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">num_entries</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">num_samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Post-NN operations to compute the loss</span>
+    <span class="c1"># First, we extract the first output of each bundle</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_entries</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span>
+    <span class="n">mask</span><span class="p">[::</span><span class="n">num_entries</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">unmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_entries</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span> <span class="o">-</span> <span class="n">mask</span>
+    <span class="n">cited</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">extra_ops</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">odocs</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">extra_ops</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">unmask</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># We duplicate each row &#39;x&#39; num_entries-1 times</span>
+    <span class="n">cited</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">extra_ops</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">cited</span><span class="p">,</span> <span class="n">num_entries</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Then we compute element-wise product of x with each y, for each bundle</span>
+    <span class="n">sims</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cited</span> <span class="o">*</span> <span class="n">odocs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># We reshape the similarities</span>
+    <span class="n">sims</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">sims</span><span class="p">,</span> <span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">num_entries</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">sims</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">sims</span>
+
+    <span class="c1"># We take the softmax of each row</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">nnet</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">sims</span><span class="p">)</span>
+
+    <span class="c1"># We compute the loss as the sum of element on the first column</span>
+    <span class="n">loss_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_entries</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">loss_mask</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">extra_ops</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">loss_mask</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="n">T</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="iterate_minibatches"><a class="viewcode-back" href="../../dssm.html#recom.dssm.iterate_minibatches">[docs]</a><span class="k">def</span> <span class="nf">iterate_minibatches</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">batchsize</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Produces an batch iterator over the input.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">        &gt;&gt;&gt; for batch in iterate_minibatches(inputs, batchsize, shuffle):</span>
+<span class="sd">        &gt;&gt;&gt;    # to stuff</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inputs (list): the input list over which iterate</span>
+<span class="sd">        batchsize (int): the size of each batch</span>
+<span class="sd">        shuffle (bool): if True, ``inputs`` is shuffled before iteration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">-</span> <span class="n">batchsize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">batchsize</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+            <span class="n">excerpt</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">batchsize</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">excerpt</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">start_idx</span><span class="p">,</span> <span class="n">start_idx</span> <span class="o">+</span> <span class="n">batchsize</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">inputs</span><span class="p">[</span><span class="n">excerpt</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Camille Masset.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
