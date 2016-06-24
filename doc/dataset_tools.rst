@@ -2,9 +2,10 @@
 Dataset Tools
 *************
 
-The module `dataset_tools` provides functions to construct a dataset from raw data.
+The module ``dataset_tools`` provides functions to construct a dataset from raw data.
 
-.. Expliquer l'usage que l'on fait du DSSM, ce que c'est, référence vers l'article, etc.
+.. todo::
+   Expliquer l'usage que l'on fait du DSSM, ce que c'est, référence vers l'article, etc.
 
 .. automodule:: recom.dataset_tools
    :members:

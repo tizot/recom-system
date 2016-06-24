@@ -140,7 +140,7 @@
             
   <div class="section" id="how-to-generate-a-dataset">
 <h1>How to generate a dataset?<a class="headerlink" href="#how-to-generate-a-dataset" title="Permalink to this headline">¶</a></h1>
-<p>The script <cite>generate_dataset.py</cite> transforms some raw data files
+<p>The script <code class="docutils literal"><span class="pre">generate_dataset.py</span></code> transforms some raw data files
 (author&#8217;s papers, irrelevant papers, cited papers) into a dataset usable by a neural network.
 These files <em>must</em> be formatted in a good way.</p>
 <div class="section" id="text-file-format">
@@ -168,11 +168,6 @@ They are formatted in the same way:</p>
 ArnetMiner: Extraction and Mining of Academic Social Networks.
 In Proceedings of the Fourteenth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (SIGKDD&#8216;2008).
 pp.990-998.</div></blockquote>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p>It seems interesting to use only a SQL database, but that requires to correctly identify authors (so, we need a <em>good</em> dataset).</p>
-<p class="last">It may also be good to adapt the API and the scripts to use only CSV or JSON files, which are naturally structured and do not require parsing.</p>
-</div>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>

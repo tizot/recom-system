@@ -15,7 +15,24 @@ from recom.dssm import *
 from recom.dataset_tools import *
 
 
-def main(author_id, num_epochs=100, num_entries=6, num_hid1=300, num_hid2=300, num_out=128, learning_rate=0.1, input_file=None, output_file='output'):
+def main(author_id=None, num_epochs=100, num_entries=6, num_hid1=300, num_hid2=300, num_out=128, learning_rate=0.1, input_file=None, output_file='output'):
+    """Builds a DSSM and trains it with the dataset of the given author.
+
+    The DSSM parameters are saved into a file, in order to be used for recommendation.
+    You must specify either the author's id, or the dataset input file.
+
+    Args:
+        author_id (int or None): id of the author in the SQL database
+        num_epochs (int): number of iterations in the training
+        num_entries (int): number of compared papers in the DSSM structure
+        num_hid1 (int): number of units in the first hidden layer
+        num_hid2 (int): number of units in the second hidden layer
+        num_out (int): number of units in the output layer
+        learning_rate (float): parameter of the SGD training algorithm
+        input_file (string or None): path to the dataset file of the author
+        output_file (string): path to the output file (DSSM parameters)
+    """
+
     if author_id is None and input_file is None:
         return 1
 

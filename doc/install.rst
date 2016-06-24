@@ -14,7 +14,7 @@ To install the project, firstly clone the repository from Github, then install p
 
 >>> git clone https://github.com/tizot/recommendation-system.git recom
 >>> cd recom
->>> virtualenv --python=python3 env.
+>>> virtualenv --python=python3.4 env.
 >>> source .env/bin/activate
 >>> pip install -r requirements.txt
 

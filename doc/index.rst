@@ -15,6 +15,15 @@ We provide three scripts to do that:
 * ``train_dssm.py`` builds a neural network (more specifically, a DSSM) and train it with the dataset built with the previous script;
 * ``recommend.py`` takes an unseen paper in input and decides whether this paper should be recommended or not.
 
+.. todo::
+   It seems interesting to use only a SQL database, but that requires to correctly identify authors (so, we need a *good* dataset).
+
+   It may also be good to adapt the API and the scripts to use only CSV or JSON files, which are naturally structured and do not require parsing.
+
+-------------
+Contents
+-------------
+
 .. toctree::
    :maxdepth: 2
 
@@ -27,10 +36,9 @@ We provide three scripts to do that:
    dssm
 
 
-
-
+-------------------
 Indices and tables
-==================
+-------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

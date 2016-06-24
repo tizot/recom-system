@@ -2,7 +2,7 @@
 How to generate a dataset?
 ***************************************
 
-The script `generate_dataset.py` transforms some raw data files
+The script ``generate_dataset.py`` transforms some raw data files
 (author's papers, irrelevant papers, cited papers) into a dataset usable by a neural network.
 These files *must* be formatted in a good way.
 
@@ -35,19 +35,12 @@ Here is an example of formatting, taken from [Tang 2008]:
    In Proceedings of the Fourteenth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (SIGKDD'2008).
    pp.990-998.
 
-.. todo::
-   It seems interesting to use only a SQL database, but that requires to correctly identify authors (so, we need a *good* dataset).
-
-   It may also be good to adapt the API and the scripts to use only CSV or JSON files, which are naturally structured and do not require parsing.
-
-
 --------
 Usage
 --------
 In a console, you can use the following command:
 
->>> python generate_dataset.py -n "Gabriella Pasi" -s "pasi" -af "./data/pasi-papers.txt" -bf "./data/bad-papers.txt"
-...                             -c 4 -d "dblp" -o "./data/dataset-pasi"
+>>> python generate_dataset.py -n "Gabriella Pasi" -s "pasi" -af "./data/pasi-papers.txt" -bf "./data/bad-papers.txt" -c 4 -d "dblp" -o "./data/dataset-pasi"
 
 This will parse the files and request the SQL database in order to build a numeric dataset.
 The produced dataset is stored into a file and can be reused later, for exemple in the training part.

@@ -2,7 +2,7 @@
 String Tools
 ****************
 
-This file gathers utils for string manipulation, essentially cleaning.
+The module ``string_tools`` gathers utils for string manipulation, essentially cleaning.
 
 .. automodule:: recom.string_tools
    :members:
