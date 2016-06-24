@@ -11,8 +11,8 @@ import theano
 import theano.tensor as T
 import lasagne
 
-from recom.dssm import *
-from recom.dataset_tools import *
+from dssm import *
+from dataset_tools import *
 
 
 def main(author_id=None, num_epochs=100, num_entries=6, num_hid1=300, num_hid2=300, num_out=128, learning_rate=0.1, input_file=None, output_file='output'):

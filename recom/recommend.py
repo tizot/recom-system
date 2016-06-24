@@ -12,10 +12,10 @@ import theano.tensor as T
 import lasagne
 from lasagne import layers, init, nonlinearities
 
-from recom.dataset_tools import *
-from recom.dssm import *
-from recom.string_tools import *
-from recom.data_retrieval import *
+from dataset_tools import *
+from dssm import *
+from string_tools import *
+from data_retrieval import *
 
 
 def compute_features_batch(papers, ngrams=None, verbosity=1):
@@ -123,7 +123,7 @@ if __name__ == '__main__':
     usage = "usage: %prog [options] args"
 
     parser = ArgumentParser()
-    
+
     parser.add_argument("-d", "--dataset", type=str, help="Path to the user dataset")
     parser.add_argument("-n", "--name", type=str, help="Name of the author")
     parser.add_argument("-s", "--slug", type=str, help="Short ASCII string for the author's name")

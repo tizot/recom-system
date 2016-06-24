@@ -117,7 +117,7 @@ def generate_citations(author_papers):
         for c in p['citations']:
             citations.append([p['index'], c])
 
-    return pd.DataFrame(citations)
+    return pd.DataFrame(citations, columns=['citing', 'cited'])
 
 
 def get_cited_papers(cited, db_cursor, papers_table='papers'):

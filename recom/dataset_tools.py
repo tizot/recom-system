@@ -5,7 +5,7 @@ import numpy as np
 from scipy import sparse
 import nltk
 
-from recom.string_tools import StringHasher, StringCleaner
+from string_tools import StringHasher, StringCleaner
 
 
 def generate_vocab(papers):
@@ -108,7 +108,7 @@ def prepare_dataset(user_papers, citations, cited_papers, tokens, bad_papers=Non
     (2) the cited papers, as a dictionary: each key is the id of a paper cited by the user,
     and the value is a tuple constituted of the list of papers id in which the paper is cited (list of strings),
     and the features of the paper (1D np.ndarray),
-    (3) the irrelevant papers, as a dictionary like the first one,  
+    (3) the irrelevant papers, as a dictionary like the first one,
     (4) the ngrams used to compute the features (list of strings).
 
     Args:
@@ -156,7 +156,7 @@ def prepare_dataset(user_papers, citations, cited_papers, tokens, bad_papers=Non
         if verbosity > 0:
             print("Done.")
 
-        return papers_feat, citations_feat, None, sh.ngrams_
+        return papers_feat, citations_feat, None, sh.ngrams
 
     # Hash bad papers' titles and abstracts
     bad_feat = compute_features(bad_papers, sh, verbosity)
@@ -165,7 +165,7 @@ def prepare_dataset(user_papers, citations, cited_papers, tokens, bad_papers=Non
         print("Done.")
 
     # we also return the author's specific list of ngrams (for future hashing)
-    return papers_feat, citations_feat, bad_feat, sh.ngrams_
+    return papers_feat, citations_feat, bad_feat, sh.ngrams
 
 
 def build_dataset(papers, citations, bad_papers, num_entries=6, verbosity=1):

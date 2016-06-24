@@ -4,8 +4,8 @@ from argparse import ArgumentParser
 import pandas as pd
 import MySQLdb
 
-from recom.data_retrieval import *
-from recom.dataset_tools import *
+import data_retrieval
+import dataset_tools
 
 
 def main(author_name, author_slug, author_papers_file, bad_papers_file, num_entries, db_name, output_file):
@@ -25,22 +25,23 @@ def main(author_name, author_slug, author_papers_file, bad_papers_file, num_entr
 
     # We parse the file containing the author's papers and generate the citations file
     print("Parsing author's papers file")
-    author_papers, _ = get_author_papers(author_name, author_slug, author_papers_file)
-    citations = generate_citations(author_papers)
+    author_papers, _ = data_retrieval.get_author_papers(author_name, author_slug, author_papers_file)
+    citations = data_retrieval.generate_citations(author_papers)
 
     # We retrieve the cited papers from the SQL database
     print("Retrieving cited papers from SQL database")
     cited = citations['cited'].unique()
-    cited_papers = get_cited_papers(cited, c)
+    cited_papers = data_retrieval.get_cited_papers(cited, c)
 
     # We parse the file containing the irrelevant papers, then we retrieve the cited papers from the db
     print("Parsing irrelevant papers file")
-    bad_papers = get_irrelevant_papers(bad_papers_file)
+    bad_papers = data_retrieval.get_irrelevant_papers(bad_papers_file)
     print("Retrieving irrelevant papers citations from SQL database")
-    bad_cited_papers = get_irrelevant_cited_papers(bad_papers, c)
+    bad_cited_papers = data_retrieval.get_irrelevant_cited_papers(bad_papers, c)
+    bad_cited_papers = [{'index': p[0], 'title': p[1], 'abstract': p[2]} for p in bad_cited_papers]
 
     # We reformat everything as tuples
-    authors_papers = tuple([(p['index'], p['title'], p['abstract']) for p in author_papers])
+    author_papers = tuple([(p['index'], p['title'], p['abstract']) for p in author_papers])
     cites = tuple([(c[0], c[1]) for c in citations.as_matrix()])
     bad_papers = tuple([(p['index'], p['title'], p['abstract']) for p in (bad_papers + bad_cited_papers)])
 
@@ -48,22 +49,22 @@ def main(author_name, author_slug, author_papers_file, bad_papers_file, num_entr
 
     # Generate global vocabulary
     print("Generating vocabulary")
-    author_vocab = generate_vocab(author_papers)
-    global_vocab = generate_vocab(bad_papers)
+    author_vocab = dataset_tools.generate_vocab(author_papers)
+    global_vocab = dataset_tools.generate_vocab(bad_papers)
     tokens = list(set(author_vocab + global_vocab))
 
     print("")
 
     print("Preparing dataset...")
-    papers_feat, citations_feat, bad_feat, ngrams = prepare_dataset(author_papers, cites, cited_papers, bad_papers, tokens)
+    papers_feat, citations_feat, bad_feat, ngrams = dataset_tools.prepare_dataset(author_papers, cites, cited_papers, tokens, bad_papers)
 
     print("Building computable dataset...")
-    inputs = build_dataset(papers_feat, citations_feat, bad_feat, num_entries)
+    inputs = dataset_tools.build_dataset(papers_feat, citations_feat, bad_feat, num_entries)
 
     print("")
 
     print("Saving dataset to file: " + output_file + ".npz")
-    dataset_to_file(inputs, ngrams, output_file)
+    dataset_tools.dataset_to_file(inputs, ngrams, output_file)
 
     print("Done.")
 
