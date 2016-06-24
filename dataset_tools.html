@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dataset Tools &mdash; Personalised Scientific Papers Recommendation System 1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Personalised Scientific Papers Recommendation System 1.0 documentation" href="index.html"/>
+        <link rel="next" title="Data Retrieval" href="data_retrieval.html"/>
+        <link rel="prev" title="String Tools" href="string_tools.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Personalised Scientific Papers Recommendation System
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_dataset.html">How to generate a dataset?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="train_system.html">How to train the system?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_tools.html">String Tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dataset Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_retrieval.html">Data Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dssm.html">Deep Semantic Structured Model (DSSM)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Personalised Scientific Papers Recommendation System</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Dataset Tools</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/dataset_tools.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dataset-tools">
+<h1>Dataset Tools<a class="headerlink" href="#dataset-tools" title="Permalink to this headline">¶</a></h1>
+<p>The module <code class="docutils literal"><span class="pre">dataset_tools</span></code> provides functions to construct a dataset from raw data.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Expliquer l&#8217;usage que l&#8217;on fait du DSSM, ce que c&#8217;est, référence vers l&#8217;article, etc.</p>
+</div>
+<span class="target" id="module-recom.dataset_tools"></span><dl class="function">
+<dt id="recom.dataset_tools.build_dataset">
+<code class="descclassname">recom.dataset_tools.</code><code class="descname">build_dataset</code><span class="sig-paren">(</span><em>papers</em>, <em>citations</em>, <em>bad_papers</em>, <em>num_entries=6</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#build_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.build_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a dataset from features variables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>papers</strong> (<em>dict</em>) &#8211; features of the user&#8217;s papers (dict string -&gt; np.ndarray)</li>
+<li><strong>citations</strong> (<em>dict</em>) &#8211; features of cited papers (dict string -&gt; tuple(list of string, np.ndarray))</li>
+<li><strong>bad_papers</strong> (<em>dict</em>) &#8211; features of unrelated papers (dict string -&gt; np.ndarray)</li>
+<li><strong>num_entries</strong> (<em>int</em>) &#8211; the number of compared papers in the DSSM structure</li>
+<li><strong>verbosity</strong> (<em>int</em>) &#8211; 0: quiet; 1: normal; 2: high</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the dataset</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">np.ndarray</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="recom.dataset_tools.compute_features">
+<code class="descclassname">recom.dataset_tools.</code><code class="descname">compute_features</code><span class="sig-paren">(</span><em>papers</em>, <em>stringHasher</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#compute_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the features of a list of papers, with a given list of ngrams.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>papers</strong> (<em>list of tuples</em>) &#8211; the list of papers (each element is a tuple of 3 strings: id, title, abstract)</li>
+<li><strong>stringHasher</strong> (<a class="reference internal" href="string_tools.html#recom.string_tools.StringHasher" title="recom.string_tools.StringHasher"><code class="xref py py-class docutils literal"><span class="pre">recom.string_tools.StringHasher</span></code></a>) &#8211; the object which contains the list of ngrams</li>
+<li><strong>verbosity</strong> (<em>int</em>) &#8211; 0: quiet; 1: normal; 2: high</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the list of papers represented as bag-of-words vectors</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict of <code class="xref py py-class docutils literal"><span class="pre">np.ndarray</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="recom.dataset_tools.dataset_from_file">
+<code class="descclassname">recom.dataset_tools.</code><code class="descname">dataset_from_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#dataset_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.dataset_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a dataset from file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; the name of the file from which extract the dataset</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the dataset (np.ndarray) and the ngrams (list of strings)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="recom.dataset_tools.dataset_to_file">
+<code class="descclassname">recom.dataset_tools.</code><code class="descname">dataset_to_file</code><span class="sig-paren">(</span><em>dataset</em>, <em>ngrams</em>, <em>filename='dataset'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#dataset_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.dataset_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a dataset to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataset</strong> (<code class="xref py py-class docutils literal"><span class="pre">np.ndarray</span></code>) &#8211; the dataset to save (built with <a class="reference internal" href="#recom.dataset_tools.build_dataset" title="recom.dataset_tools.build_dataset"><code class="xref py py-func docutils literal"><span class="pre">recom.dataset_tools.build_dataset()</span></code></a>)</li>
+<li><strong>ngrams</strong> (<em>list of strings</em>) &#8211; the ngrams used to compute the features</li>
+<li><strong>filename</strong> (<em>string</em>) &#8211; the filename without extension (will be .npz)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="recom.dataset_tools.generate_vocab">
+<code class="descclassname">recom.dataset_tools.</code><code class="descname">generate_vocab</code><span class="sig-paren">(</span><em>papers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#generate_vocab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.generate_vocab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the vocabulary used in the papers given in parameters, after cleaning and stopwords removal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>papers</strong> (<em>list of tuples</em>) &#8211; the raw list of papers from which generates the vocabulary (each element is a tuple of 3 strings: id, title and abstract)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of tokens forming the vocabulary</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="recom.dataset_tools.invert_citations">
+<code class="descclassname">recom.dataset_tools.</code><code class="descname">invert_citations</code><span class="sig-paren">(</span><em>citations</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#invert_citations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.invert_citations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms a list of citation relations into a hashtable cited_paper -&gt; list of citing papers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>citations</strong> (<em>list of tuples</em>) &#8211; the list of citation relations (each element is a tuple of 2 string: <em>citing</em> paper&#8217;s id, <em>cited</em> paper&#8217;s id)</li>
+<li><strong>verbosity</strong> (<em>int</em>) &#8211; 0: quiet; 1: normal; 2: high</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a dict whose keys are cited papers ids and whose values are the lists of the ids of the papers that cite the keys (string -&gt; list of strings)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="recom.dataset_tools.prepare_dataset">
+<code class="descclassname">recom.dataset_tools.</code><code class="descname">prepare_dataset</code><span class="sig-paren">(</span><em>user_papers</em>, <em>citations</em>, <em>cited_papers</em>, <em>tokens</em>, <em>bad_papers=None</em>, <em>verbosity=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/dataset_tools.html#prepare_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.dataset_tools.prepare_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares data from string representations of papers in order to buidl a numeric dataset.</p>
+<p>The result is a tuple of 4 elements:</p>
+<p>(1) the user&#8217;s papers, as a dictionary: each key is a the id of a paper written by the user,
+and the value is the features of the paper (1D np.ndarray),
+(2) the cited papers, as a dictionary: each key is the id of a paper cited by the user,
+and the value is a tuple constituted of the list of papers id in which the paper is cited (list of strings),
+and the features of the paper (1D np.ndarray),
+(3) the irrelevant papers, as a dictionary like the first one,
+(4) the ngrams used to compute the features (list of strings).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_papers</strong> (<em>list of 3-tuples</em>) &#8211; the papers written by the user (each element is a tuple of 3 strings: id, title, abstract)</li>
+<li><strong>citations</strong> (<em>list of 2-tuples</em>) &#8211; the list of citation relations</li>
+<li><strong>cited_papers</strong> (<em>list of 3-tuples</em>) &#8211; the papers that the user has cited (each element is a tuple of 3 strings: id, title, abstract)</li>
+<li><strong>tokens</strong> (<em>list of strings</em>) &#8211; the vocabulary to use for computing features</li>
+<li><strong>bad_papers</strong> (<em>list of 3-tuples or None</em>) &#8211; unrelated papers (each element is a tuple of 3 strings: id, title, abstract)</li>
+<li><strong>verbosity</strong> (<em>int</em>) &#8211; 0: quiet; 1: normal; 2: high</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">data to build a dataset with</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data_retrieval.html" class="btn btn-neutral float-right" title="Data Retrieval" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="string_tools.html" class="btn btn-neutral" title="String Tools" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Camille Masset.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

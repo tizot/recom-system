@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>recom.data_retrieval &mdash; Personalised Scientific Papers Recommendation System 1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Personalised Scientific Papers Recommendation System 1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Personalised Scientific Papers Recommendation System
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_dataset.html">How to generate a dataset?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../train_system.html">How to train the system?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../string_tools.html">String Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataset_tools.html">Dataset Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_retrieval.html">Data Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dssm.html">Deep Semantic Structured Model (DSSM)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Personalised Scientific Papers Recommendation System</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>recom.data_retrieval</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for recom.data_retrieval</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="kn">import</span> <span class="nn">MySQLdb</span>
+
+
+<div class="viewcode-block" id="list2paper"><a class="viewcode-back" href="../../data_retrieval.html#recom.data_retrieval.list2paper">[docs]</a><span class="k">def</span> <span class="nf">list2paper</span><span class="p">(</span><span class="n">l_paper</span><span class="p">,</span> <span class="n">r_index</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">r_author</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">r_title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">r_abstract</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">r_cite</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform a raw data paper (formatted as a list) into a dict.</span>
+
+<span class="sd">    This function uses regular expression to match title, abstract, authors, etc. in each element of the list given in input.</span>
+<span class="sd">    If a regex is None, then a default regex is used.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        l_paper (list of strings): the list of elements forming the paper (title, authors, etc.), in raw format</span>
+<span class="sd">        r_index (:class:`_sre.SRE_pattern`): a compiled regex to match an index string</span>
+<span class="sd">        r_author (:class:`_sre.SRE_pattern`): a compiled regex to match an authors list</span>
+<span class="sd">        r_title (:class:`_sre.SRE_pattern`): a compiled regex to match a title</span>
+<span class="sd">        r_abstract (:class:`_sre.SRE_pattern`): a compiled regex to match an abstract</span>
+<span class="sd">        r_cite (:class:`_sre.SRE_pattern`): a compiled regex to match a citation</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: the paper as a dict, with list of authors and list of citations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;authors&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;abstract&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;citations&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+    <span class="k">if</span> <span class="n">r_index</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">r_index</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^#index(.*)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r_author</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">r_author</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^#@(.*)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r_title</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">r_title</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^#\*(.*)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r_abstract</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">r_abstract</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^#!(.*)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r_cite</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">r_cite</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^#%(.*)&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">l_paper</span><span class="p">:</span>
+        <span class="n">m_index</span> <span class="o">=</span> <span class="n">r_index</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m_index</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">m_author</span> <span class="o">=</span> <span class="n">r_author</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m_author</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="s1">&#39;authors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">m_author</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+
+        <span class="n">m_title</span> <span class="o">=</span> <span class="n">r_title</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m_title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m_title</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">m_abstract</span> <span class="o">=</span> <span class="n">r_abstract</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m_abstract</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m_abstract</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">m_cite</span> <span class="o">=</span> <span class="n">r_cite</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m_cite</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="s1">&#39;citations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m_cite</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">p</span></div>
+
+
+<div class="viewcode-block" id="get_author_papers"><a class="viewcode-back" href="../../data_retrieval.html#recom.data_retrieval.get_author_papers">[docs]</a><span class="k">def</span> <span class="nf">get_author_papers</span><span class="p">(</span><span class="n">author_name</span><span class="p">,</span> <span class="n">author_slug</span><span class="p">,</span> <span class="n">input_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the list of papers written by the author (list of dicts) from a raw text file.</span>
+
+<span class="sd">    The text file must be formatted in the following way:</span>
+
+<span class="sd">    * each paper is a block of lines;</span>
+<span class="sd">    * each line represents either the index, the title, the abstract, the list of authors or a citation reference;</span>
+<span class="sd">    * there is a way to recognise the type of the line with a regular expression;</span>
+<span class="sd">    * the papers are separated by a blank line.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        author_name (string): the real name of the user</span>
+<span class="sd">        author_slug (string): a short and ASCII string to replace the author&#39;s name</span>
+<span class="sd">        input_file (string): the name of the file in which are stored the author&#39;s papers</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: the author&#39;s papers as dictionaries: those with abstract and those without abstract</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Split result into a list of lists (each sublist is a paper)</span>
+    <span class="n">papers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">papers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">papers</span> <span class="o">=</span> <span class="p">[</span><span class="n">list2paper</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">papers</span><span class="p">]</span>
+
+    <span class="n">author_papers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">papers_without_abstract</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">papers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">author_name</span> <span class="ow">in</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;authors&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">author_papers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">papers_without_abstract</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">author_papers</span><span class="p">,</span> <span class="n">papers_without_abstract</span></div>
+
+
+<div class="viewcode-block" id="generate_citations"><a class="viewcode-back" href="../../data_retrieval.html#recom.data_retrieval.generate_citations">[docs]</a><span class="k">def</span> <span class="nf">generate_citations</span><span class="p">(</span><span class="n">author_papers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the citation relations.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        author_papers (list of dicts): the author&#39;s papers, as a list of dicts produced by the function :func:`recom.data_retrieval.list2paper`</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :class:`pandas.DataFrame`: the citation relations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">author_papers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;citations&#39;</span><span class="p">]:</span>
+            <span class="n">citations</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">c</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_cited_papers"><a class="viewcode-back" href="../../data_retrieval.html#recom.data_retrieval.get_cited_papers">[docs]</a><span class="k">def</span> <span class="nf">get_cited_papers</span><span class="p">(</span><span class="n">cited</span><span class="p">,</span> <span class="n">db_cursor</span><span class="p">,</span> <span class="n">papers_table</span><span class="o">=</span><span class="s1">&#39;papers&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the cited papers data from a SQL database.</span>
+
+<span class="sd">    The table ``papers_table`` must have the columns: ``id``, ``title`` and ``abstract``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cited (list of strings): list of the cited papers&#39; ids</span>
+<span class="sd">        db_cursor (:class:`MySQLdb.cursors.Cursor`): cursor of a SQL database in which there is a papers table</span>
+<span class="sd">        papers_table (string): name of the papers table in the SQL database</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple of tuples: the results of the SQL query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Select papers authored by user</span>
+    <span class="n">db_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id, title, abstract FROM papers p WHERE p.abstract != &#39;&#39; AND p.id IN (&quot;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">cited</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cited</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">db_cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_irrelevant_papers"><a class="viewcode-back" href="../../data_retrieval.html#recom.data_retrieval.get_irrelevant_papers">[docs]</a><span class="k">def</span> <span class="nf">get_irrelevant_papers</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the list of irrelevant papers written (list of dicts) from a raw text file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_file (string): relative path to the raw text file</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of dicts: the list of irrelevant papers (with abstract) formatted as dicts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Split result into a list of lists (each sublist is a paper)</span>
+    <span class="n">papers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">papers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">papers</span> <span class="o">=</span> <span class="p">[</span><span class="n">list2paper</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">papers</span><span class="p">]</span>
+
+    <span class="n">papers_with_abstract</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">papers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">papers_with_abstract</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">papers_with_abstract</span></div>
+
+
+<div class="viewcode-block" id="get_irrelevant_cited_papers"><a class="viewcode-back" href="../../data_retrieval.html#recom.data_retrieval.get_irrelevant_cited_papers">[docs]</a><span class="k">def</span> <span class="nf">get_irrelevant_cited_papers</span><span class="p">(</span><span class="n">bad_papers</span><span class="p">,</span> <span class="n">db_cursor</span><span class="p">,</span> <span class="n">papers_table</span><span class="o">=</span><span class="s1">&#39;papers&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the papers cited by the irrelevant papers given in input, from a SQL database.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bad_papers (list of dicts): the list of irrelevant papers, formatted as the output of :func:`recom.data_retrieval.list2paper`</span>
+<span class="sd">        db_cursor (:class:`MySQLdb.cursors.Cursor`): cursor of a SQL database in which there is a papers table</span>
+<span class="sd">        papers_table (string): name of the papers table in the SQL database</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple of tuples: the results of the SQL query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">citations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">bad_papers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;citations&#39;</span><span class="p">]:</span>
+            <span class="n">citations</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">c</span><span class="p">])</span>
+
+    <span class="n">citations_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;citing&#39;</span><span class="p">,</span> <span class="s1">&#39;cited&#39;</span><span class="p">])</span>
+    <span class="n">cited</span> <span class="o">=</span> <span class="n">citations_df</span><span class="p">[</span><span class="s1">&#39;cited&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+    <span class="n">db_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id, title, abstract FROM papers p WHERE p.abstract != &#39;&#39; AND p.id IN (&quot;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">cited</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cited</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">db_cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Camille Masset.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

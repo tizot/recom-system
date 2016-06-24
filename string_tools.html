@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>String Tools &mdash; Personalised Scientific Papers Recommendation System 1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Personalised Scientific Papers Recommendation System 1.0 documentation" href="index.html"/>
+        <link rel="next" title="Dataset Tools" href="dataset_tools.html"/>
+        <link rel="prev" title="How to train the system?" href="train_system.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Personalised Scientific Papers Recommendation System
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_dataset.html">How to generate a dataset?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="train_system.html">How to train the system?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">String Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset_tools.html">Dataset Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_retrieval.html">Data Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dssm.html">Deep Semantic Structured Model (DSSM)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Personalised Scientific Papers Recommendation System</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>String Tools</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/string_tools.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="string-tools">
+<h1>String Tools<a class="headerlink" href="#string-tools" title="Permalink to this headline">¶</a></h1>
+<p>The module <code class="docutils literal"><span class="pre">string_tools</span></code> gathers utils for string manipulation, essentially cleaning.</p>
+<span class="target" id="module-recom.string_tools"></span><dl class="class">
+<dt id="recom.string_tools.StringCleaner">
+<em class="property">class </em><code class="descclassname">recom.string_tools.</code><code class="descname">StringCleaner</code><a class="reference internal" href="_modules/recom/string_tools.html#StringCleaner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringCleaner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides tools to clean strings, like accents removal and standardisation.</p>
+<dl class="method">
+<dt id="recom.string_tools.StringCleaner.clean_string">
+<code class="descname">clean_string</code><span class="sig-paren">(</span><em>s</em>, <em>bord=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringCleaner.clean_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringCleaner.clean_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply cleaning operations to a string, especially accents removal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>s</strong> (<em>string</em>) &#8211; the string  to clean</li>
+<li><strong>bord</strong> (<em>string</em>) &#8211; an optional character to surround the words with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the cleaned string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="recom.string_tools.StringCleaner.remove_accents">
+<code class="descname">remove_accents</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringCleaner.remove_accents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringCleaner.remove_accents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces all accentuated characters by their non-accentuated equivalent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<em>string</em>) &#8211; the string to transform</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the deburred string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="recom.string_tools.StringHasher">
+<em class="property">class </em><code class="descclassname">recom.string_tools.</code><code class="descname">StringHasher</code><span class="sig-paren">(</span><em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides tools to transform a sentence into a bag-of-words vector.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<em>int</em>) &#8211; the dimension of n-gram</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="recom.string_tools.StringHasher.hash">
+<code class="descname">hash</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms a string into a n-gram count representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<em>string</em>) &#8211; the string to hash</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">n-gram count representation of the string given in input.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">np.ndarray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="recom.string_tools.StringHasher.init_ngrams">
+<code class="descname">init_ngrams</code><span class="sig-paren">(</span><em>tokens</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.init_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.init_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the ngrams from a list of words and affects them to <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">deal with the case n != 1</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tokens</strong> (<em>list of strings</em>) &#8211; list of words from which compute the n-grams</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="recom.string_tools.StringHasher.load_ngrams">
+<code class="descname">load_ngrams</code><span class="sig-paren">(</span><em>ngrams_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.load_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.load_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a list of ngrams into <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ngrams</strong> (<em>list of strings</em>) &#8211; the list of n-grams to load</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="recom.string_tools.StringHasher.print_ngrams">
+<code class="descname">print_ngrams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#StringHasher.print_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.StringHasher.print_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the list of ngrams.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="recom.string_tools.WordHasher">
+<em class="property">class </em><code class="descclassname">recom.string_tools.</code><code class="descname">WordHasher</code><span class="sig-paren">(</span><em>n=3</em>, <em>bord='#'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides tools to transform a string into a bag-of-ngrams vector.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; dimension of n-gram</li>
+<li><strong>bord</strong> (<em>string</em>) &#8211; delimiter character to surround words with</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="recom.string_tools.WordHasher.hash">
+<code class="descname">hash</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms a string into a n-gram count representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<em>string</em>) &#8211; the string to hash</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a n-gram count representation of the string given in input.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">np.ndarray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="recom.string_tools.WordHasher.init_ngrams">
+<code class="descname">init_ngrams</code><span class="sig-paren">(</span><em>tokens</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.init_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.init_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the ngrams from a list of words and affects them to <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tokens</strong> (<em>list of strings</em>) &#8211; list of words from which compute the ngrams</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="recom.string_tools.WordHasher.load_ngrams">
+<code class="descname">load_ngrams</code><span class="sig-paren">(</span><em>ngrams_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.load_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.load_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a list of ngrams into <code class="docutils literal"><span class="pre">self.ngrams</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ngrams</strong> (<em>list of strings</em>) &#8211; the list of ngrams to load</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="recom.string_tools.WordHasher.print_ngrams">
+<code class="descname">print_ngrams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/recom/string_tools.html#WordHasher.print_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recom.string_tools.WordHasher.print_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the list of ngrams.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dataset_tools.html" class="btn btn-neutral float-right" title="Dataset Tools" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="train_system.html" class="btn btn-neutral" title="How to train the system?" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Camille Masset.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

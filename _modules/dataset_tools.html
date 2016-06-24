@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dataset_tools &mdash; Personalised Scientific Papers Recommendation System 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Personalised Scientific Papers Recommendation System 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dataset_tools</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">MySQLdb</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+
+<span class="kn">from</span> <span class="nn">string_tools</span> <span class="kn">import</span> <span class="n">StringHasher</span><span class="p">,</span> <span class="n">StringCleaner</span>
+
+
+<div class="viewcode-block" id="generate_user_vocab"><a class="viewcode-back" href="../dataset_tools.html#dataset_tools.generate_user_vocab">[docs]</a><span class="k">def</span> <span class="nf">generate_user_vocab</span><span class="p">(</span><span class="n">user_papers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the vocabulary used in the papers given in parameters, after cleaning and stopwords removal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">StringCleaner</span><span class="p">()</span>
+
+    <span class="c1"># Generate author&#39;s vocabulary</span>
+    <span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">user_papers</span><span class="p">)</span>
+    <span class="c1"># Cleaning</span>
+    <span class="n">corpus</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">clean_string</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+    <span class="c1"># Tokenization</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="s2">r&quot;(?:[A-Z]\.)+|\w+(?:-\w+)*|\d+(?:\.\d+)?%?&quot;</span>
+    <span class="c1">#         we keep tokens that are words (with optional internal hyphens), acronyms and percentages</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">regexp_tokenize</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">pattern</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s2">&quot;english&quot;</span><span class="p">))</span>
+    <span class="n">num_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^\d+$&quot;</span><span class="p">)</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">num_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">t</span><span class="p">)])</span> <span class="c1"># we remove only-numeric tokens</span>
+    <span class="c1"># Stemming</span>
+    <span class="n">porter</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">PorterStemmer</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">porter</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span></div>
+
+
+<span class="n">generate_vocab</span> <span class="o">=</span> <span class="n">generate_user_vocab</span>
+
+
+<span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="n">papers</span><span class="p">,</span> <span class="n">stringHasher</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">StringCleaner</span><span class="p">()</span>
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">stringHasher</span>
+
+    <span class="n">papers_feat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">papers</span><span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">p_id</span><span class="p">,</span> <span class="n">p_title</span><span class="p">,</span> <span class="n">p_abstract</span> <span class="ow">in</span> <span class="n">papers</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">clean_string</span><span class="p">(</span><span class="n">p_title</span><span class="p">)</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">clean_string</span><span class="p">(</span><span class="n">p_abstract</span><span class="p">)</span>
+        <span class="n">to_hash</span> <span class="o">=</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">abstract</span>
+        <span class="n">papers_feat</span><span class="p">[</span><span class="n">p_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">to_hash</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Paper </span><span class="si">%d</span><span class="s2"> over </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">total</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Processed {} papers in {:.3f}s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">papers</span><span class="p">),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">papers_feat</span>
+
+
+<div class="viewcode-block" id="invert_citations"><a class="viewcode-back" href="../dataset_tools.html#dataset_tools.invert_citations">[docs]</a><span class="k">def</span> <span class="nf">invert_citations</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find in which papers a given cited paper has been cited (sic)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">citations_assoc</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">cited_by</span><span class="p">,</span> <span class="n">cited_paper</span><span class="p">)</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cited_paper</span> <span class="ow">in</span> <span class="n">citations_assoc</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">citations_assoc</span><span class="p">[</span><span class="n">cited_paper</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cited_by</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">citations_assoc</span><span class="p">[</span><span class="n">cited_paper</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cited_by</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Citation </span><span class="si">%d</span><span class="s2"> over %&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">total</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Processed {} citation relations in {:.3f}s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">citations</span><span class="p">),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">citations_assoc</span></div>
+
+
+<div class="viewcode-block" id="prepare_dataset"><a class="viewcode-back" href="../dataset_tools.html#dataset_tools.prepare_dataset">[docs]</a><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">user_papers</span><span class="p">,</span> <span class="n">citations</span><span class="p">,</span> <span class="n">cited_papers</span><span class="p">,</span> <span class="n">bad_papers</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: A tuple of papers features and cited papers features.</span>
+<span class="sd">        The first element of the tuple is a dictionary: each key is a the id of a paper written by the user,</span>
+<span class="sd">        and the value is the features of the paper (1D np.ndarray).</span>
+<span class="sd">        The second element of the tuple is a dictionary: each key is the id of a paper cited by the user,</span>
+<span class="sd">        and the value is a tuple constituted of</span>
+<span class="sd">            (a) the list of papers id in which the paper is cited (list of strings),</span>
+<span class="sd">            (b) the features of the paper (1D np.ndarray)</span>
+<span class="sd">        :rtype: tuple(dict(np.ndarray), dict(tuple(list(string), np.ndarray))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Verbosity: 0 = None, 1 = Few details, 2 = Much details</span>
+
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">StringHasher</span><span class="p">()</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">StringCleaner</span><span class="p">()</span>
+
+    <span class="c1"># Initiate the ngrams (specific to the author)</span>
+    <span class="n">sh</span><span class="o">.</span><span class="n">init_ngrams</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+    <span class="c1"># Hash user&#39;s papers&#39; titles and abstracts</span>
+    <span class="n">papers_feat</span> <span class="o">=</span> <span class="n">compute_features</span><span class="p">(</span><span class="n">user_papers</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">verbosity</span><span class="p">)</span>
+
+    <span class="n">citations_assoc</span> <span class="o">=</span> <span class="n">invert_citations</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">verbosity</span><span class="p">)</span>
+
+    <span class="c1"># Hash cited papers&#39; titles and abstracts</span>
+    <span class="n">citations_feat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cited_papers</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">p_id</span><span class="p">,</span> <span class="n">p_title</span><span class="p">,</span> <span class="n">p_abstract</span><span class="p">)</span> <span class="ow">in</span> <span class="n">cited_papers</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">clean_string</span><span class="p">(</span><span class="n">p_title</span><span class="p">)</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">clean_string</span><span class="p">(</span><span class="n">p_abstract</span><span class="p">)</span>
+        <span class="n">to_hash</span> <span class="o">=</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">abstract</span>
+        <span class="n">citations_feat</span><span class="p">[</span><span class="n">p_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">citations_assoc</span><span class="p">[</span><span class="n">p_id</span><span class="p">],</span> <span class="n">sh</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">to_hash</span><span class="p">))</span> <span class="c1"># [, np.ndarray]</span>
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Cited paper </span><span class="si">%d</span><span class="s2"> over %&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">total</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Processed {} cited papers in {:.3f}s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cited_papers</span><span class="p">),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">bad_papers</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">papers_feat</span><span class="p">,</span> <span class="n">citations_feat</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">sh</span><span class="o">.</span><span class="n">ngrams_</span>
+
+    <span class="c1"># Hash bad papers&#39; titles and abstracts</span>
+    <span class="n">bad_feat</span> <span class="o">=</span> <span class="n">compute_features</span><span class="p">(</span><span class="n">bad_papers</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">verbosity</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># we also return the author&#39;s specific list of ngrams (for future hashing)</span>
+    <span class="k">return</span> <span class="n">papers_feat</span><span class="p">,</span> <span class="n">citations_feat</span><span class="p">,</span> <span class="n">bad_feat</span><span class="p">,</span> <span class="n">sh</span><span class="o">.</span><span class="n">ngrams_</span></div>
+
+
+<span class="k">def</span> <span class="nf">build_dataset</span><span class="p">(</span><span class="n">papers</span><span class="p">,</span> <span class="n">citations</span><span class="p">,</span> <span class="n">bad_papers</span><span class="p">,</span> <span class="n">num_entries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="c1"># Number of non citing papers needed to complete one block of dataset</span>
+    <span class="n">num_others</span> <span class="o">=</span> <span class="n">num_entries</span> <span class="o">-</span> <span class="mi">2</span>
+
+    <span class="c1"># Init result</span>
+    <span class="n">reps</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">reps</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
+    <span class="n">num_feats</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">papers</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">num_entries</span><span class="p">,</span> <span class="n">num_feats</span><span class="p">))</span>
+
+    <span class="n">sample</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">acceptable_idx</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">bad_papers</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">rep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">reps</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c_id</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">citations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="n">sample</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># features of the cited paper</span>
+
+            <span class="n">citing_papers</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># indexes of papers that cite c_id</span>
+            <span class="c1"># select the features of one of these papers, randomly</span>
+            <span class="n">one_citing_paper</span> <span class="o">=</span> <span class="n">citing_papers</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">citing_papers</span><span class="p">))]</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="n">sample</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">papers</span><span class="p">[</span><span class="n">one_citing_paper</span><span class="p">]</span>
+
+            <span class="c1"># select num_others &quot;bad&quot; papers</span>
+            <span class="n">selected_idx</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">acceptable_idx</span><span class="p">,</span> <span class="n">num_others</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_others</span><span class="p">):</span>
+                <span class="n">dataset</span><span class="p">[</span><span class="n">sample</span><span class="p">][</span><span class="mi">2</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">bad_papers</span><span class="p">[</span><span class="n">selected_idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+
+            <span class="n">sample</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">sample</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sample {} over {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Generated dataset with {} samples in {:.3f}s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">dataset</span>
+
+
+<span class="k">def</span> <span class="nf">dataset_to_file</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">ngrams</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;dataset&#39;</span><span class="p">):</span>
+    <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_entries</span><span class="p">,</span> <span class="n">num_features</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span>
+    <span class="c1"># We rehaspe the ndarray from 3D to 2D in order to write it into a text file</span>
+    <span class="c1"># Each line of the file will correspond to one cited paper</span>
+    <span class="c1"># Therefore, on each there will be the `num_entries` sets of features</span>
+    <span class="n">dataset_sp</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_samples</span><span class="o">*</span><span class="n">num_entries</span><span class="p">,</span> <span class="n">num_features</span><span class="p">))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">num_entries</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">num_entries</span><span class="p">]),</span> <span class="n">data</span><span class="o">=</span><span class="n">dataset_sp</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">dataset_sp</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span>
+             <span class="n">indptr</span><span class="o">=</span><span class="n">dataset_sp</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">dataset_sp</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">ngrams</span><span class="o">=</span><span class="n">ngrams</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">dataset_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">num_entries</span> <span class="o">=</span> <span class="n">loader</span><span class="p">[</span><span class="s1">&#39;num_entries&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sp_dataset</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">loader</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">loader</span><span class="p">[</span><span class="s1">&#39;indices&#39;</span><span class="p">],</span> <span class="n">loader</span><span class="p">[</span><span class="s1">&#39;indptr&#39;</span><span class="p">]),</span>
+                         <span class="n">shape</span> <span class="o">=</span> <span class="n">loader</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">])</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">sp_dataset</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+    <span class="n">samp_entries</span><span class="p">,</span> <span class="n">num_features</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">return</span> <span class="n">dataset</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">samp_entries</span> <span class="o">/</span> <span class="n">num_entries</span><span class="p">),</span> <span class="n">num_entries</span><span class="p">,</span> <span class="n">num_features</span><span class="p">),</span> <span class="n">loader</span><span class="p">[</span><span class="s1">&#39;ngrams&#39;</span><span class="p">]</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Camille Masset.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
