@@ -30,10 +30,9 @@ Contents
    install
    generate_dataset
    train_system
-   string_tools
-   dataset_tools
-   data_retrieval
-   dssm
+   recommend
+
+   api
 
 
 -------------------
