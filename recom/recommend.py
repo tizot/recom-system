@@ -46,7 +46,7 @@ def compute_features_batch(papers, ngrams=None, verbosity=1):
     total = len(papers)
     i = 1
     start_time = time.time()
-    for p in user_papers:
+    for p in papers:
         title = sc.clean_string(p['title'])
         abstract = sc.clean_string(p['abstract'])
         to_hash = title + " " + abstract

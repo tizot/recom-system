@@ -126,7 +126,7 @@ class StringHasher(object):
             ngrams_ (list of strings): the list of n-grams to load
         """
         if len(ngrams_[0].split(' ')) == self.n_:
-            self.ngrams = ngramsl
+            self.ngrams = ngrams_
         else:
             raise ValueError("Incompatible ngram sizes (n = %d expected, but got %d)" % (self.n_, len(ngrams_[0])))
 
