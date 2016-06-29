@@ -5,6 +5,8 @@ according to her field of expertise and her interests.
 
 To do that, we use *deep learning* techniques like Skip-Thought vectors and DSSM.
 
+The documentation of this project is available at: https://tizot.github.io/recom-system
+
 ## Installation
 
 The project is developed in python 3. We used specifically the version 3.4.
@@ -17,7 +19,7 @@ To install the project, firstly clone the repository from Github, then install p
 ```[bash]
 git clone https://github.com/tizot/recommendation-system.git recom
 cd recom
-virtualenv --python=python3.4 env.
+virtualenv --python=python3.4 .env
 source .env/bin/activate
 pip install -r requirements.txt
 ```
